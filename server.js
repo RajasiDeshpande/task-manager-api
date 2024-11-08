@@ -1,28 +1,35 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
-// Middleware to parse JSON bodies
+const port = 3000;
+app.listen(port,()=>{
+    console.log(`server is listening through port ${port}`);
+})
 app.use(express.json());
-
-const mongoURI = 'mongodb+srv://rajasi:R%40jasi04@cluster0.pjlgq.mongodb.net/taskcollection?retryWrites=true&w=majority&appName=Cluster0';
-
-// Connect to MongoDB using Mongoose
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => console.log('Connected to MongoDB Atlas'))
-    .catch((err) => console.error('Error connecting to MongoDB:', err));
-
-// Define Task schema using Mongoose
+async function main() {
+  await mongoose.connect("mongodb+srv://rajasi:R%40jasi04@cluster0.pjlgq.mongodb.net/bookcollection?retryWrites=true&w=majority&appName=Cluster0");
+}
+main()
+.then(()=>{
+    console.log("connection successful");
+})
+.catch((err)=>{
+    console.log(err);
+})
 const taskSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    description: { type: String, required: true },
-    completed: { type: Boolean, default: false }
+    title: { 
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true 
+    },
+    completed: { 
+        type: Boolean, 
+        default: false 
+    }
 });
-
-// Create Task model
 const Task = mongoose.model('Task', taskSchema);
 
 // POST: Create a new task
